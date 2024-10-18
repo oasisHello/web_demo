@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 	
 	private boolean validateUser(String username, String password) {
 		//TODO: to be refined.
-		 String query = "SELECT * FROM sys_user WHERE user_name = ? AND password = ?";
+		 String query = "SELECT * FROM sys_user WHERE user_name = ? AND password = ? ";
 
 	        try (Connection conn = DBUtil.getConnection();
 	             PreparedStatement stmt = conn.prepareStatement(query)) {

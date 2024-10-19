@@ -39,6 +39,15 @@
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
 
+   <servlet>
+        <servlet-name>ProtectedServlet</servlet-name>
+        <servlet-class>web.servlet.ProtectedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProtectedServlet</servlet-name>
+        <url-pattern>/protected</url-pattern>
+    </servlet-mapping>
+   
 	<!-- Welcome File -->
 	<welcome-file-list>
 		<welcome-file>index_log_in.html</welcome-file>

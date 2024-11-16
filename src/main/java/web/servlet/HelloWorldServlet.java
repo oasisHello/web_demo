@@ -24,24 +24,25 @@ public class HelloWorldServlet extends jakarta.servlet.http.HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/html");
-
-		// Get the current session, do not create a new one.
-		HttpSession session = request.getSession(false);
-		PrintWriter out = response.getWriter();
-
-		if (session != null && session.getAttribute("username") != null) {
-			String username = (String) session.getAttribute("username");
-			logger.info("Displaying welcome page for user: { }", username);
-			out.println("<!DOCTYPE html>");
-			out.println("<html><head><title>Welcome</title></head><body>");
-			out.println("<h1>Welcome, " + username + "!</h1>");
-			out.println("<a href='logout'>Logout</a>");
-			out.println("</body></html>");
-		}else {
-			logger.warn("Unauthorized access to welcome page.");
-			response.sendRedirect("index_log_in.html");
-		}
+		response.getWriter().println("Hello, World!");
+//		response.setContentType("text/html");
+//
+//		// Get the current session, do not create a new one.
+//		HttpSession session = request.getSession(false);
+//		PrintWriter out = response.getWriter();
+//
+//		if (session != null && session.getAttribute("username") != null) {
+//			String username = (String) session.getAttribute("username");
+//			logger.info("Displaying welcome page for user: { }", username);
+//			out.println("<!DOCTYPE html>");
+//			out.println("<html><head><title>Welcome</title></head><body>");
+//			out.println("<h1>Welcome, " + username + "!</h1>");
+//			out.println("<a href='logout'>Logout</a>");
+//			out.println("</body></html>");
+//		}else {
+//			logger.warn("Unauthorized access to welcome page.");
+//			response.sendRedirect("index_log_in.html");
+//		}
 
 		// TODO: what if I want to access the database?
 //		try (Connection conn = DBUtil.getConnection()) {

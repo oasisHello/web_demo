@@ -10,7 +10,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import web.util.JwtUtil;
 
 public class AuthenticationFilter implements Filter {
 	@Override
@@ -27,25 +27,42 @@ public class AuthenticationFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		// Get the current session, do not create a new one.
-		HttpSession session = httpRequest.getSession(false);
-
 		// Get the requested URI
 		String uri = httpRequest.getRequestURI();
 
 		// TODO: why need this ?
-		// Allow access to login and static resources
+		// Allow access to login and static resources freely.
 		if (uri.endsWith("index_log_in.html") || uri.endsWith("login")) {
 			chain.doFilter(request, response);// Proceed to the requested resource
 			return;
 		}
+		
+		// Extract the token from the Authorization header.(expected format: "Bearer: <token> ")
+		String authHeader = httpRequest.getHeader("Authorization");
+		
+		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+			httpResponse.sendRedirect("index_log_in.html");
+			return;
+		}
+		
+		// Extract the token from the Authorization header
+		String token = authHeader.substring(7); // Remove "Bearer " prefix
+		String userName = JwtUtil.extractUsername(token);
 
 		// TODO: why need this ?
 		// Check if user is logged in
-		if (session != null && session.getAttribute("username") != null) {
-			chain.doFilter(request, response);
-		} else {
+		try {
+			// Validate the JWT token(custom validation method from your JWT utility class)
+			if(JwtUtil.validateToken(token,userName)) {
+				// If the token is valid, allow the request to proceed to the next filter/servlet
+				chain.doFilter(request,response);
+			}else {
+				httpResponse.sendRedirect("index_log_in.html");
+			}
+		} catch (Exception e) {
+			// Validation fails, redirect to login
 			httpResponse.sendRedirect("index_log_in.html");
 		}
+
 	}
 }

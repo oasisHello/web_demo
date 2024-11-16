@@ -49,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 					.signWith(key, SignatureAlgorithm.HS256).compact();
 			response.setContentType("application/json");
 			response.getWriter().write("{\"token\": \"" + jwtToken + "\"}");
+			//response.sendRedirect("/hello");
 			logger.info("User {} logged in successfully.", username);
 
 		} else {
